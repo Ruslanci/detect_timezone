@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Определение часового пояса</title>
+    <title>Detect Timezone</title>
 </head>
 <body>
-    <p>Пожалуйста, подождите. Мы определяем ваш часовой пояс...</p>
+    <h1>Определение вашего часового пояса</h1>
+    <p>Пожалуйста, подождите, пока мы определим ваш часовой пояс...</p>
+
     <script>
-        // Get the browser's time zone
-        const timezone = encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone);
+        // Detect the user's timezone
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Extract the user_id from the query string
-        const params = new URLSearchParams(window.location.search);
-        const user_id = params.get("user_id");
+        // Get the user ID from the URL parameter (this can be passed securely)
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');  // User ID should be passed via the link
 
-        // Redirect back to the bot with the time zone
-        const botUsername = "Buravchik_Helper_Bot"; // Replace with your bot's username
-        window.location.href = `https://t.me/${botUsername}?start=timezone_${user_id}_${timezone}`;
+        // Construct the deep link URL for your bot with the timezone and user ID
+        const botUsername = 'Buravchik_Helper_Bot';  // Your bot's username
+        const message = encodeURIComponent(`Ваш часовой пояс: ${timezone}`);
+        const deepLink = `https://t.me/${botUsername}?start=${userId}:${timezone}`;
+
+        // Redirect the user to the bot with the information
+        window.location.href = deepLink;
     </script>
 </body>
 </html>
