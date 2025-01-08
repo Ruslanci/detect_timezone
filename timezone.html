@@ -13,17 +13,22 @@
         // Detect the user's timezone
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Get the user ID from the URL parameter (this can be passed securely)
+        // Get the user ID from the URL parameter
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('user_id');  // User ID should be passed via the link
+        const userId = urlParams.get('user_id');
 
-        // Construct the deep link URL for your bot with the timezone and user ID
-        const botUsername = 'Buravchik_Helper_Bot';  // Your bot's username
-        const message = encodeURIComponent(`Ваш часовой пояс: ${timezone}`);
-        const deepLink = `https://t.me/${botUsername}?start=${userId}:${timezone}`;
+        if (!userId) {
+            alert('Ошибка: User ID не передан в URL.');
+            console.error('User ID is missing from URL parameters.');
+        } else {
+            // Construct the deep link URL for your bot with the timezone and user ID
+            const botUsername = 'Buravchik_Helper_Bot';  // Replace with your bot's username
+            const deepLink = `https://t.me/${botUsername}?start=${userId}:${timezone}`;
 
-        // Redirect the user to the bot with the information
-        window.location.href = deepLink;
+            console.log(`Redirecting to deep link: ${deepLink}`);
+            // Redirect the user to the bot with the timezone data
+            window.location.href = deepLink;
+        }
     </script>
 </body>
 </html>
