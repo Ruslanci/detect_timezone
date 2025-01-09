@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Определение часового пояса</title>
+    <title>Detect Timezone</title>
 </head>
 <body>
     <h1>Определение вашего часового пояса</h1>
-    <p>Определяем ваш часовой пояс...</p>
-    
+    <p>Можете закрыть эту страницу.</p>
+
     <script>
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');
 
-        
-        // Check if Telegram WebApp API is available
-        if (window.Telegram && window.Telegram.WebApp) {
-            const webApp = window.Telegram.WebApp;
-
-            // Send the timezone back to the bot
-            webApp.initDataUnsafe;
-            webApp.sendData(JSON.stringify({ timezone }));
-            
-            // Close the Web App
-            setTimeout(() => {
-                webApp.close();
-            }, 500);
+        if (!userId) {
+            alert('Ошибка: User ID не передан в URL.');
+            console.error('User ID is missing from URL parameters.');
         } else {
-            alert("Ошибка: Telegram Web App API не поддерживается.");
-            console.error("Telegram Web App API is not available.");
+            // Generate the deep link
+            const botUsername = 'Buravchik_Helper_Bot'; // Replace with your bot's username
+            const payload = btoa(`${userId}:${timezone}`); // Base64 encode the payload
+            const deepLink = `https://t.me/${botUsername}?start=${payload}`;
+
+            console.log(`Redirecting to deep link: ${deepLink}`);
+            window.location.href = deepLink;
+            setTimeout(() => {
+                console.log('Attempting to close the page...');
+                window.close();
+            }, 500);
         }
     </script>
 </body>
