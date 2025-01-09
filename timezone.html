@@ -25,6 +25,10 @@
         
             console.log(`Redirecting to deep link: ${deepLink}`);
             window.location.href = deepLink;
+            setTimeout(() => {
+                console.log('Attempting to close the page...');
+                window.close();
+            }, 500);
         }
     </script>
 </body>
